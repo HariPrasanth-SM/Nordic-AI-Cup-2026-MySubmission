@@ -1,0 +1,52 @@
+"""Official routes and DTOs, with model warmup before accepting requests."""
+import datetime
+import logging
+import os
+import time
+import hashlib
+from pathlib import Path
+import ultralytics
+from contextlib import asynccontextmanager
+import uvicorn
+from fastapi import FastAPI
+from dtos import DroneFlybyPredictRequestDto, DroneFlybyPredictResponseDto
+from example import predict,get_pipeline
+from utils import validate_response
+
+logging.basicConfig(level=logging.INFO)
+start_time=time.time()
+REVISION='balanced-camera-v2'
+CODE_SHA256=hashlib.sha256(b''.join(p.read_bytes() for p in sorted(Path(__file__).parent.joinpath('drone_pipeline').glob('*.py')))).hexdigest()
+
+@asynccontextmanager
+async def lifespan(app):
+    pipeline=get_pipeline()  # fail fast on missing weights or incompatible class names
+    yield
+    pipeline.close()
+
+app=FastAPI(lifespan=lifespan)
+
+@app.post('/predict',response_model=DroneFlybyPredictResponseDto)
+def predict_endpoint(request: DroneFlybyPredictRequestDto):
+    try:
+        response=predict(request)
+        validate_response(response)
+        return response
+    except Exception:
+        logging.exception('Prediction failed for %s; returning a valid empty response',request.request_id)
+        pipeline=get_pipeline()
+        with pipeline.lock:
+            pipeline.sessions.pop(request.sequence_id,None)
+        return DroneFlybyPredictResponseDto(request_id=request.request_id,frame=request.frame,annotations=[])
+
+@app.get('/api')
+def hello():
+    return {'service':'drone-flyby-usecase','revision':REVISION,'code_sha256':CODE_SHA256,
+            'ultralytics':ultralytics.__version__,'uptime':str(datetime.timedelta(seconds=time.time()-start_time))}
+
+@app.get('/')
+def index(): return 'Your endpoint is running!'
+
+if __name__=='__main__':
+    # Exactly one worker: state and the GPU model belong to this process.
+    uvicorn.run(app,host='0.0.0.0',port=int(os.getenv('DRONE_PORT','9053')),workers=1)

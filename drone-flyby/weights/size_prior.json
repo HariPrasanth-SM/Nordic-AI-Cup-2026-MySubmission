@@ -1,0 +1,187 @@
+{
+ "version": 1,
+ "classes": [
+  "hangar",
+  "helicopter",
+  "jet_plane",
+  "large_launcher",
+  "large_tower",
+  "medium_launcher",
+  "medium_plane",
+  "mine_roller",
+  "small_launcher",
+  "small_plane",
+  "small_tower",
+  "ta-ta",
+  "tank",
+  "condor",
+  "jammer",
+  "spacecraft"
+ ],
+ "source": {
+  "label_boxes": 52457,
+  "annotation_boxes": 235
+ },
+ "stats": {
+  "hangar": {
+   "n": 3440,
+   "log_size_mean": 4.966328965975646,
+   "log_size_std": 0.11335404867816631,
+   "log_aspect_mean": 0.4973439070807304,
+   "log_aspect_std": 0.1566409133405484,
+   "size_px_p05": 120.6648249650245,
+   "size_px_median": 143.49912906899468,
+   "size_px_p95": 169.41133374754315
+  },
+  "helicopter": {
+   "n": 2798,
+   "log_size_mean": 4.644113456495165,
+   "log_size_std": 0.08184773685315064,
+   "log_aspect_mean": 0.16705408375407535,
+   "log_aspect_std": 0.013418286218047545,
+   "size_px_p05": 91.65151417668996,
+   "size_px_median": 103.97114996709422,
+   "size_px_p95": 118.65917573150422
+  },
+  "jet_plane": {
+   "n": 3217,
+   "log_size_mean": 4.032318238896545,
+   "log_size_std": 0.12459094277410471,
+   "log_aspect_mean": -0.09844007135851134,
+   "log_aspect_std": 0.052027394837881144,
+   "size_px_p05": 46.98936069069253,
+   "size_px_median": 56.39148877641023,
+   "size_px_p95": 79.97499613154102
+  },
+  "large_launcher": {
+   "n": 3289,
+   "log_size_mean": 4.497582497186825,
+   "log_size_std": 0.11332675771912418,
+   "log_aspect_mean": 0.4608152009849503,
+   "log_aspect_std": 0.2472018620121156,
+   "size_px_p05": 74.94531310011092,
+   "size_px_median": 89.79977746498037,
+   "size_px_p95": 108.44353354995401
+  },
+  "large_tower": {
+   "n": 3439,
+   "log_size_mean": 4.042127055725352,
+   "log_size_std": 0.11313086252615426,
+   "log_aspect_mean": -0.16430305518738028,
+   "log_aspect_std": 0.2190903660618469,
+   "size_px_p05": 48.76474147711643,
+   "size_px_median": 56.947344246066486,
+   "size_px_p95": 65.27633163287203
+  },
+  "medium_launcher": {
+   "n": 3476,
+   "log_size_mean": 3.0910424638128613,
+   "log_size_std": 0.12383817305456726,
+   "log_aspect_mean": 0.04652000550502255,
+   "log_aspect_std": 0.1294942557609168,
+   "size_px_p05": 18.973665892230738,
+   "size_px_median": 22.00000023,
+   "size_px_p95": 25.37715498080902
+  },
+  "medium_plane": {
+   "n": 3481,
+   "log_size_mean": 3.8127975381540318,
+   "log_size_std": 0.1094010148941266,
+   "log_aspect_mean": 0.20585204762607565,
+   "log_aspect_std": 0.02462705081972547,
+   "size_px_p05": 39.24283386810897,
+   "size_px_median": 45.27692578521647,
+   "size_px_p95": 51.65268636692578
+  },
+  "mine_roller": {
+   "n": 3452,
+   "log_size_mean": 3.9219243209703536,
+   "log_size_std": 0.1094435667688181,
+   "log_aspect_mean": -0.1335313938745226,
+   "log_aspect_std": 0.21364417491524573,
+   "size_px_p05": 43.588989347769925,
+   "size_px_median": 50.497524787458644,
+   "size_px_p95": 57.861904612620556
+  },
+  "small_launcher": {
+   "n": 3288,
+   "log_size_mean": 2.561981991130201,
+   "log_size_std": 0.2494278903991055,
+   "log_aspect_mean": -0.18232156279395484,
+   "log_aspect_std": 0.1236225970057152,
+   "size_px_p05": 9.94987440272489,
+   "size_px_median": 12.961481415332122,
+   "size_px_p95": 25.82634303187348
+  },
+  "small_plane": {
+   "n": 3404,
+   "log_size_mean": 3.6050398145731988,
+   "log_size_std": 0.11685133578337405,
+   "log_aspect_mean": -0.21622310045239462,
+   "log_aspect_std": 0.029898625824149754,
+   "size_px_p05": 31.304951640275696,
+   "size_px_median": 36.783148333442035,
+   "size_px_p95": 44.82186955114657
+  },
+  "small_tower": {
+   "n": 3152,
+   "log_size_mean": 3.8465128726425966,
+   "log_size_std": 0.1552749544698336,
+   "log_aspect_mean": -0.06899287348695149,
+   "log_aspect_std": 0.05391966479993903,
+   "size_px_p05": 38.88444424599637,
+   "size_px_median": 46.82947782252114,
+   "size_px_p95": 58.49786293925616
+  },
+  "ta-ta": {
+   "n": 3354,
+   "log_size_mean": 3.11128813474997,
+   "log_size_std": 0.08401155651490129,
+   "log_aspect_mean": 0.4054650956081646,
+   "log_aspect_std": 0.12466267121626443,
+   "size_px_p05": 18.57417575990924,
+   "size_px_median": 22.44994433667932,
+   "size_px_p95": 24.494897415584333
+  },
+  "tank": {
+   "n": 3339,
+   "log_size_mean": 3.4978830795809968,
+   "log_size_std": 0.12303635611272631,
+   "log_aspect_mean": 0.13353137976737972,
+   "log_aspect_std": 0.14771217750509677,
+   "size_px_p05": 28.284271380397975,
+   "size_px_median": 33.045423330924365,
+   "size_px_p95": 48.47679864141195
+  },
+  "condor": {
+   "n": 3115,
+   "log_size_mean": 4.7592065670378485,
+   "log_size_std": 0.11452716393857257,
+   "log_aspect_mean": 0.06513930265173064,
+   "log_aspect_std": 0.08669552178579623,
+   "size_px_p05": 99.99999987,
+   "size_px_median": 116.65333257134144,
+   "size_px_p95": 136.6345490178088
+  },
+  "jammer": {
+   "n": 3331,
+   "log_size_mean": 3.551661023631477,
+   "log_size_std": 0.10867815493960734,
+   "log_aspect_mean": -0.2954642275449988,
+   "log_aspect_std": 0.15020054740393396,
+   "size_px_p05": 28.565713722573083,
+   "size_px_median": 34.87119128220313,
+   "size_px_p95": 39.94996859973735
+  },
+  "spacecraft": {
+   "n": 3117,
+   "log_size_mean": 3.8056738566285793,
+   "log_size_std": 0.0808871898240932,
+   "log_aspect_mean": -0.09097177603181356,
+   "log_aspect_std": 0.03017815544216126,
+   "size_px_p05": 36.46916517456905,
+   "size_px_median": 44.955533492774826,
+   "size_px_p95": 48.9591667573091
+  }
+ }
+}

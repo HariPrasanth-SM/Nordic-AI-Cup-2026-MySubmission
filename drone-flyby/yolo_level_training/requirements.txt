@@ -1,0 +1,4 @@
+# Install a CUDA-compatible PyTorch/torchvision build first (see README).
+ultralytics==8.3.203
+PyYAML>=6.0
+Pillow>=10

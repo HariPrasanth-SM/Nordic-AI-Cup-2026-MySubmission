@@ -1,0 +1,143 @@
+"""Diagnostic entrypoint. Wraps existing API; does not change detection/tracking."""
+import os
+os.environ['DRONE_TRACE_IMAGES']='1'
+import asyncio,base64,hashlib,json,logging,math,queue,threading,time,uuid
+from pathlib import Path
+import uvicorn
+from dtos import MAXIMUM_CENTER_DELTA_PIXELS,ALLOWED_RESOLUTION_LEVELS
+
+ROOT=Path(os.getenv('DRONE_AUDIT_DIR','results/api_audit'))/(time.strftime('%Y%m%d-%H%M%S')+'-'+uuid.uuid4().hex[:8])
+ROOT.mkdir(parents=True)
+REVISION='camera-egress-audit-1'
+
+
+def constrain(req,res):
+    """Check actual serialized command against THIS request. Keep annotations intact."""
+    original=res.get('requested_view'); audit={'original':original,'action':'unchanged'}
+    v=req['view']; c=req['camera_constraints']; level=v['resolution_level']
+    region=v['source_region_xyxy']; center=[v['center_x'],v['center_y']]
+    audit.update(current_level=level,current_center=center,region_center=[(region[0]+region[2])/2,(region[1]+region[3])/2])
+    radius=max(0,min(float(c['maximum_center_delta']),MAXIMUM_CENTER_DELTA_PIXELS[level])-2)
+    audit['safe_limit_px']=radius
+    if res.get('request_id')!=req['request_id'] or res.get('frame')!=req['frame']:
+        # A mismatched response must not export another frame's predictions.
+        res={'request_id':req['request_id'],'frame':req['frame'],'annotations':[],'requested_view':None}
+        audit['action']='response_identity_mismatch'; return res,audit
+    if not original: return res,audit
+    if center!=audit['region_center']:
+        res['requested_view']=None; audit['action']='inconsistent_view_center'; return res,audit
+    cmd=dict(original); target=cmd['resolution_level']
+    bounds=next((b for b in c['center_bounds'] if b['resolution_level']==target),None)
+    if target not in ALLOWED_RESOLUTION_LEVELS[level] or target not in c['allowed_resolution_levels'] or bounds is None:
+        res['requested_view']=None; audit['action']='illegal_level'; return res,audit
+    low=[bounds['minimum_center_x'],bounds['minimum_center_y']]; high=[bounds['maximum_center_x'],bounds['maximum_center_y']]
+    reset=target==0 and c['full_view_reset_exempt_from_delta']
+    def valid(x,y):
+        return low[0]<=x<=high[0] and low[1]<=y<=high[1] and (reset or math.hypot(x-center[0],y-center[1])<=radius)
+    x,y=cmd['center_x'],cmd['center_y']; audit['original_distance_px']=math.hypot(x-center[0],y-center[1])
+    if not valid(x,y):
+        end=[max(low[i],min(high[i],p)) for i,p in enumerate([x,y])]
+        near=[max(low[i],min(high[i],center[i])) for i in range(2)]
+        if not reset and math.dist(near,center)>radius:
+            res['requested_view']=None; audit['action']='no_reachable_target'; return res,audit
+        if not reset and math.dist(end,center)>radius:
+            lo,hi=0.,1.
+            for _ in range(45):
+                mid=(lo+hi)/2; p=[near[i]+mid*(end[i]-near[i]) for i in range(2)]
+                if math.dist(p,center)<=radius: lo=mid
+                else: hi=mid
+            end=[near[i]+lo*(end[i]-near[i]) for i in range(2)]
+        points=[(x,y) for x in {math.floor(end[0]),math.ceil(end[0])} for y in {math.floor(end[1]),math.ceil(end[1])} if valid(x,y)]
+        if not points:
+            res['requested_view']=None; audit['action']='rounding_unreachable'; return res,audit
+        x,y=min(points,key=lambda p:math.dist(p,end)); cmd.update(center_x=x,center_y=y)
+        audit['action']='projected_to_reachable'
+    assert valid(x,y)
+    res['requested_view']=cmd; audit['final']=cmd; audit['final_distance_px']=math.hypot(x-center[0],y-center[1])
+    return res,audit
+
+
+class Journal:
+    def __init__(self):
+        self.q=queue.Queue(128); self.dropped=0; self.errors=0
+        self.t=threading.Thread(target=self.work,daemon=True); self.t.start()
+    def add(self,row):
+        try:self.q.put_nowait(row)
+        except queue.Full:self.dropped+=1; logging.error('AUDIT QUEUE FULL: %s',row.get('event'))
+    def work(self):
+        with (ROOT/'http.jsonl').open('a',buffering=1) as f:
+            while True:
+                row=self.q.get()
+                try:
+                    if row is None:return
+                    image=row.pop('_image',None)
+                    if image:
+                        raw=base64.b64decode(image,validate=True)
+                        name=row['call_id']+'.png'; (ROOT/name).write_bytes(raw)
+                        row['image']=name; row['image_sha256']=hashlib.sha256(raw).hexdigest()
+                    f.write(json.dumps(row,allow_nan=False)+'\n')
+                except Exception:self.errors+=1; logging.exception('Audit write failed')
+                finally:self.q.task_done()
+    def close(self):
+        self.q.join(); self.q.put(None); self.t.join()
+        (ROOT/'writer_status.json').write_text(json.dumps({'dropped':self.dropped,'errors':self.errors}))
+
+
+class AuditMiddleware:
+    def __init__(self,app,journal):self.app=app; self.journal=journal; self.active=set()
+    async def __call__(self,scope,receive,send):
+        if scope['type']!='http' or scope['path']!='/predict':return await self.app(scope,receive,send)
+        call=uuid.uuid4().hex; start=time.perf_counter(); wall=time.time(); messages=[]; body=b''
+        concurrent=list(self.active); self.active.add(call)
+        try:
+            while True:
+                msg=await receive(); messages.append(msg)
+                if msg['type']=='http.disconnect':return
+                body+=msg.get('body',b'')
+                if not msg.get('more_body'):break
+            body_ms=(time.perf_counter()-start)*1000
+            req=json.loads(body); snapshot=json.loads(body); encoded=snapshot.get('view',{}).pop('image',None)
+            self.journal.add({'event':'received','call_id':call,'unix_received':wall,'body_received_ms':body_ms,'request':snapshot,
+                              'concurrent_calls':concurrent,'request_sha256':hashlib.sha256(body).hexdigest(),'_image':encoded})
+            captured=[]
+            async def replay():
+                if messages:return messages.pop(0)
+                return await receive()
+            async def capture(msg):captured.append(msg)
+            await self.app(scope,replay,capture)
+            header=next(m for m in captured if m['type']=='http.response.start')
+            original=b''.join(m.get('body',b'') for m in captured if m['type']=='http.response.body')
+            audit={}; res=None; final=original
+            if header['status']==200:
+                res=json.loads(original); res,audit=constrain(req,res)
+                final=json.dumps(res,separators=(',',':'),allow_nan=False).encode()
+            ready=(time.perf_counter()-start)*1000
+            header=dict(header); header['headers']=[(k,v) for k,v in header['headers'] if k.lower()!='content-length'.encode()]+[(b'content-length',str(len(final)).encode()),(b'x-drone-audit',call.encode())]
+            self.journal.add({'event':'response_ready','call_id':call,'elapsed_ms':ready,'unix_ready':time.time(),
+                              'status':header['status'],'camera_audit':audit,'response':res,
+                              'original_response_body':original.decode(errors='replace'),'response_body':final.decode(errors='replace'),'response_sha256':hashlib.sha256(final).hexdigest(),
+                              'over_frame_interval':ready>req.get('frame_interval_ms',333),'over_timeout':ready>req.get('response_timeout_ms',3333)})
+            await send(header); await send({'type':'http.response.body','body':final,'more_body':False})
+            self.journal.add({'event':'send_completed','call_id':call,'elapsed_ms':(time.perf_counter()-start)*1000,'unix_sent':time.time()})
+        except Exception as exc:
+            self.journal.add({'event':'exception','call_id':call,'elapsed_ms':(time.perf_counter()-start)*1000,'error':repr(exc)})
+            raise
+        finally:self.active.discard(call)
+
+
+def main():
+    from example import get_pipeline
+    from api import app
+    p=get_pipeline()
+    if not p.cfg.trace.enabled or not p.cfg.trace.images:raise RuntimeError('Enable trace.enabled and trace.images in the selected config')
+    files=[Path(__file__),*Path('drone_pipeline').glob('*.py'),Path('api.py')]
+    manifest={'revision':REVISION,'pid':os.getpid(),'pipeline_trace':str(p.trace.root.resolve()),
+              'files':{str(f):hashlib.sha256(f.read_bytes()).hexdigest() for f in files},
+              'note':'ASGI send completion is not organizer receipt or acceptance. Record remote result separately.'}
+    (ROOT/'manifest.json').write_text(json.dumps(manifest,indent=2))
+    @app.get('/diagnostics')
+    def diagnostics():return {'revision':REVISION,'pid':os.getpid(),'audit_directory':str(ROOT),'files':manifest['files']}
+    journal=Journal(); print('HTTP AUDIT:',ROOT.resolve(),flush=True)
+    try:uvicorn.run(AuditMiddleware(app,journal),host='0.0.0.0',port=int(os.getenv('DRONE_PORT','9053')),workers=1)
+    finally:journal.close(); p.close()
+if __name__=='__main__':main()

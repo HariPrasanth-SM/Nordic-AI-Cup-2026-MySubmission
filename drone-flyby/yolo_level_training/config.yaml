@@ -1,0 +1,20 @@
+# Paths are relative to the working directory where train.py is launched.
+dataset: datasets/helsinki_balanced_v2
+output: runs/helsinki_v2_dota11s
+size: s
+pretraining: dota  # dota or coco (both transfer feature layers; fresh Detect head)
+levels: [L1, L2]
+device: '0'
+batch: 16
+imgsz: 640
+workers: 4
+seed: 42
+warmup_epochs: 5
+finetune_epochs: 100
+patience: 25
+warmup_lr: 0.001
+finetune_lr: 0.0003
+weight_decay: 0.0005
+amp: true
+qualitative_count: 30
+preview_conf: 0.25

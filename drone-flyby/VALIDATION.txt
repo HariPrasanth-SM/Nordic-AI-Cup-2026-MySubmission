@@ -1,0 +1,4 @@
+16 CPU regression/integration tests passed, including 15 reported camera failures and 2000 random camera commands validated by the official local evaluator.
+25 existing pipeline tests passed with PRECISION_ENABLED=0.
+Installer exercised against the previous supplied project and rerun for idempotence.
+No live DINO/GPU inference, public server submission, or competition score measured.

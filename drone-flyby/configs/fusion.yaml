@@ -1,0 +1,62 @@
+# Realtime fusion: YOLO (L1/L2) + DINOv2 verifier -> causal 2.7 s window fusion -> one answer per request.
+# DRONE_CONFIG=configs/fusion.yaml python api.py
+detector:
+  backend: drone_pipeline.dino_verifier:create
+  weights_l1: weights/L1.pt
+  weights_l2: weights/L2.pt
+  device: '0'
+  imgsz: 640
+  conf: 0.12
+  iou: 0.55
+  l0_mode: skip
+  warmup: 2
+  strict_classes: true
+  predict_args:
+    half: true
+  dino_model: dinov2_vitb14     # dinov2_vits14 (384-d, old bank still works) | dinov2_vitb14 (768-d) | dinov2_vitl14 (1024-d)
+  dino_mode: shadow             # shadow = DINO only feeds the fusion evidence (recommended); filter = also drops boxes
+  dino_max_candidates: 48       # crops encoded per view; lower it if latency > ~250 ms
+  # dino_bank / dino_protos default to weights/dino_bank_<model>.npz and weights/dino_protos_<model>.npz
+export_fresh: true
+fresh_conf: 0.25
+deadline_ms: 2600            # hard cap for predict(); api.py answers from the last publish after this
+motion:
+  enabled: true
+  features: 1200
+  keyframes: 3
+ego:                         # constant-velocity straight-line flight prior
+  enabled: true
+tracker:
+  enabled: true
+  high_conf: 0.25
+  birth_conf: 0.40
+  immediate_conf: 0.65
+  confirm_hits: 2
+  max_coast_seconds: 2.0
+publish:
+  mode: fusion               # fusion | tracker (raw tracks) | legacy (old PrecisionGate)
+  window_ms: 2700            # evidence window (about 8 frames at 333 ms)
+  # -- strictness. AP is rank based: keep a small low-score tail (min_publish) and get precision from the evidence below.
+  min_publish: 0.04
+  orphan_min_conf: 0.5       # unmatched detections need this YOLO confidence
+  single_sight_factor: 0.55  # first sighting, not yet confirmed by a second frame (DINO/prototype strength lifts it)
+  propagate_min_evidence: 0.25   # an unobserved object is dead-reckoned only when confirmed and this strong
+  miss_enabled: true         # seen, now inside the view (L1/L2, large enough), but not detected -> penalty / removal
+  miss_factor: 0.5           # score multiplier per in-view miss (an L1 miss counts miss_l1_weight = 0.6)
+  anomaly_max_hits: 2        # <= this many sightings and anomaly_misses in-view misses -> removed
+  anomaly_misses: 1.0
+  drop_misses: 3.0           # established tracks are removed after this many
+  proto_floor: 0.3           # score multiplier when the box is far from every prototype of its class (needs dino_protos_<model>.npz)
+  size_prior: weights/size_prior.json   # scripts/build_size_prior.py; '' disables
+  size_floor: 0.6            # worst-case multiplier for an atypical object size
+camera:
+  mode: active
+  shadow: true               # stateful camera legality (fixes the rejected-move errors)
+  overview_every: 60
+  explore_every: 3
+trace:
+  enabled: true
+  directory: results/live
+  images: true               # needed by scripts/review.py to draw the crops
+  every: 1
+opencv_threads: 2

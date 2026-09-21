@@ -1,0 +1,36 @@
+detector:
+  backend: drone_pipeline.dino_verifier:create
+  weights_l1: weights/L1.pt
+  weights_l2: weights/L2.pt
+  device: '0'
+  imgsz: 640
+  conf: 0.12
+  iou: 0.55
+  l0_mode: skip
+  warmup: 2
+  strict_classes: true
+  predict_args:
+    half: true
+export_fresh: false
+fresh_conf: 0.2
+motion:
+  enabled: true
+  features: 1200
+  keyframes: 3
+tracker:
+  enabled: true
+  high_conf: 0.25
+  birth_conf: 0.35
+  immediate_conf: 0.65
+  confirm_hits: 2
+  max_coast_seconds: 2.0
+camera:
+  mode: active
+  overview_every: 60
+  explore_every: 3
+trace:
+  enabled: true
+  directory: results/live
+  images: true
+  every: 1
+opencv_threads: 2
