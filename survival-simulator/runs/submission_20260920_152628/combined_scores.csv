@@ -1,0 +1,5 @@
+model,games,mean,median,minimum,maximum,mean_gain_vs_baseline,gain_ci_low,gain_ci_high
+baseline,24,1080.63,1079.51,574.93,1507.27,0.0,0.0,0.0
+fin4_challenger,24,1050.39,1047.18,596.03,1888.74,-30.24,-154.12,93.63
+ppo_greedy,24,1026.18,1004.88,587.62,1600.22,-54.45,-144.91,36.0
+qr_mean,24,991.96,1016.72,471.5,1541.34,-88.67,-186.69,9.35

@@ -1,0 +1,33 @@
+{
+  "baseline": "baseline",
+  "summary": {
+    "baseline": {
+      "n": 12,
+      "mean": 1060.3214415297016,
+      "cvar20": 732.0548881860014,
+      "median": 1081.9497491436878,
+      "full": 0,
+      "max": 1457.070270095209,
+      "policy_ms": 1.905330755076867
+    },
+    "fin4_challenger": {
+      "n": 12,
+      "mean": 1042.0993689152963,
+      "cvar20": 763.2475598423272,
+      "median": 1033.246688342263,
+      "full": 0,
+      "max": 1512.9677706611014,
+      "policy_ms": 2.5825203094758136
+    }
+  },
+  "paired_vs_baseline": {
+    "fin4_challenger": {
+      "n": 12,
+      "delta": -18.22207261440542,
+      "lo": -215.6235269545505,
+      "hi": 179.17938172573966
+    }
+  },
+  "horizon": 3000,
+  "note": "Pilot comparisons, not a promotion gate; censored episodes excluded."
+}

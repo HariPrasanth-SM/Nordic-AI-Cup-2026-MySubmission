@@ -1,0 +1,55 @@
+{"event": "game", "arm": "baseline", "seed": 2501000, "score": 1160.72, "seconds": 1113.2, "policy_ms": 2.26, "population": 38}
+{"event": "game", "arm": "qr_mean", "seed": 2501000, "score": 1100.94, "seconds": 1042.6, "policy_ms": 1.98, "population": 38}
+{"event": "game", "arm": "ppo_greedy", "seed": 2501000, "score": 870.18, "seconds": 827.5, "policy_ms": 1.99, "population": 39}
+{"event": "game", "arm": "fin4_challenger", "seed": 2501000, "score": 842.84, "seconds": 810.2, "policy_ms": 3.64, "population": 25}
+{"event": "game", "arm": "baseline", "seed": 2501001, "score": 1507.27, "seconds": 1439.8, "policy_ms": 1.92, "population": 42}
+{"event": "game", "arm": "qr_mean", "seed": 2501001, "score": 1541.34, "seconds": 1476.1, "policy_ms": 2.06, "population": 44}
+{"event": "game", "arm": "ppo_greedy", "seed": 2501001, "score": 1600.22, "seconds": 1514.1, "policy_ms": 2.51, "population": 44}
+{"event": "game", "arm": "fin4_challenger", "seed": 2501001, "score": 1185.12, "seconds": 1150.7, "policy_ms": 3.98, "population": 26}
+{"event": "game", "arm": "baseline", "seed": 2501002, "score": 1038.54, "seconds": 979.8, "policy_ms": 3.22, "population": 37}
+{"event": "game", "arm": "qr_mean", "seed": 2501002, "score": 1070.53, "seconds": 1029.0, "policy_ms": 2.69, "population": 36}
+{"event": "game", "arm": "ppo_greedy", "seed": 2501002, "score": 1080.82, "seconds": 1032.3, "policy_ms": 3.51, "population": 36}
+{"event": "game", "arm": "fin4_challenger", "seed": 2501002, "score": 1113.37, "seconds": 1115.6, "policy_ms": 3.85, "population": 25}
+{"event": "game", "arm": "baseline", "seed": 2501003, "score": 1022.85, "seconds": 969.5, "policy_ms": 3.26, "population": 32}
+{"event": "game", "arm": "qr_mean", "seed": 2501003, "score": 1065.25, "seconds": 1005.5, "policy_ms": 2.5, "population": 32}
+{"event": "game", "arm": "ppo_greedy", "seed": 2501003, "score": 1243.17, "seconds": 1179.6, "policy_ms": 2.16, "population": 32}
+{"event": "game", "arm": "fin4_challenger", "seed": 2501003, "score": 1416.13, "seconds": 1393.2, "policy_ms": 3.64, "population": 25}
+{"event": "game", "arm": "baseline", "seed": 2501004, "score": 1178.44, "seconds": 1131.2, "policy_ms": 1.95, "population": 35}
+{"event": "game", "arm": "qr_mean", "seed": 2501004, "score": 1094.48, "seconds": 1051.0, "policy_ms": 3.1, "population": 40}
+{"event": "game", "arm": "ppo_greedy", "seed": 2501004, "score": 833.07, "seconds": 793.2, "policy_ms": 1.98, "population": 37}
+{"event": "game", "arm": "fin4_challenger", "seed": 2501004, "score": 817.45, "seconds": 797.0, "policy_ms": 3.04, "population": 24}
+{"event": "game", "arm": "baseline", "seed": 2501005, "score": 1211.09, "seconds": 1138.5, "policy_ms": 2.68, "population": 42}
+{"event": "game", "arm": "qr_mean", "seed": 2501005, "score": 1074.63, "seconds": 1014.3, "policy_ms": 3.42, "population": 42}
+{"event": "game", "arm": "ppo_greedy", "seed": 2501005, "score": 1001.25, "seconds": 979.3, "policy_ms": 1.96, "population": 41}
+{"event": "game", "arm": "fin4_challenger", "seed": 2501005, "score": 1044.88, "seconds": 1037.9, "policy_ms": 4.1, "population": 26}
+{"event": "game", "arm": "baseline", "seed": 2501006, "score": 797.72, "seconds": 762.8, "policy_ms": 1.18, "population": 38}
+{"event": "game", "arm": "qr_mean", "seed": 2501006, "score": 471.5, "seconds": 448.0, "policy_ms": 1.96, "population": 38}
+{"event": "game", "arm": "ppo_greedy", "seed": 2501006, "score": 601.85, "seconds": 583.4, "policy_ms": 2.19, "population": 34}
+{"event": "game", "arm": "fin4_challenger", "seed": 2501006, "score": 1049.49, "seconds": 1043.4, "policy_ms": 2.71, "population": 25}
+{"event": "game", "arm": "baseline", "seed": 2501007, "score": 1296.46, "seconds": 1228.5, "policy_ms": 2.45, "population": 45}
+{"event": "game", "arm": "qr_mean", "seed": 2501007, "score": 1100.1, "seconds": 1074.9, "policy_ms": 2.96, "population": 40}
+{"event": "game", "arm": "ppo_greedy", "seed": 2501007, "score": 1302.78, "seconds": 1275.6, "policy_ms": 2.27, "population": 42}
+{"event": "game", "arm": "fin4_challenger", "seed": 2501007, "score": 1221.98, "seconds": 1226.4, "policy_ms": 5.2, "population": 25}
+{"event": "game", "arm": "baseline", "seed": 2501008, "score": 802.97, "seconds": 783.4, "policy_ms": 2.23, "population": 31}
+{"event": "game", "arm": "qr_mean", "seed": 2501008, "score": 866.64, "seconds": 832.4, "policy_ms": 3.31, "population": 36}
+{"event": "game", "arm": "ppo_greedy", "seed": 2501008, "score": 791.8, "seconds": 762.9, "policy_ms": 2.35, "population": 22}
+{"event": "game", "arm": "fin4_challenger", "seed": 2501008, "score": 596.03, "seconds": 584.9, "policy_ms": 3.22, "population": 24}
+{"event": "game", "arm": "baseline", "seed": 2501009, "score": 1280.97, "seconds": 1210.9, "policy_ms": 1.31, "population": 45}
+{"event": "game", "arm": "qr_mean", "seed": 2501009, "score": 1117.39, "seconds": 1059.9, "policy_ms": 3.02, "population": 40}
+{"event": "game", "arm": "ppo_greedy", "seed": 2501009, "score": 982.8, "seconds": 929.2, "policy_ms": 1.8, "population": 45}
+{"event": "game", "arm": "fin4_challenger", "seed": 2501009, "score": 1888.74, "seconds": 1864.8, "policy_ms": 2.45, "population": 26}
+{"event": "game", "arm": "baseline", "seed": 2501010, "score": 1385.91, "seconds": 1340.0, "policy_ms": 1.94, "population": 44}
+{"event": "game", "arm": "qr_mean", "seed": 2501010, "score": 1000.53, "seconds": 976.2, "policy_ms": 3.03, "population": 43}
+{"event": "game", "arm": "ppo_greedy", "seed": 2501010, "score": 893.34, "seconds": 836.6, "policy_ms": 2.51, "population": 44}
+{"event": "game", "arm": "fin4_challenger", "seed": 2501010, "score": 1142.99, "seconds": 1167.2, "policy_ms": 2.97, "population": 25}
+{"event": "game", "arm": "baseline", "seed": 2501011, "score": 981.72, "seconds": 960.6, "policy_ms": 1.74, "population": 35}
+{"event": "game", "arm": "qr_mean", "seed": 2501011, "score": 970.35, "seconds": 929.9, "policy_ms": 1.73, "population": 32}
+{"event": "game", "arm": "ppo_greedy", "seed": 2501011, "score": 1008.52, "seconds": 957.9, "policy_ms": 2.14, "population": 30}
+{"event": "game", "arm": "fin4_challenger", "seed": 2501011, "score": 1253.65, "seconds": 1190.5, "policy_ms": 2.18, "population": 25}
+{"event": "summary", "arm": "baseline", "n": 12, "mean": 1138.721168281295, "cvar20": 860.8019591539442, "median": 1169.5783271472887, "full": 0, "max": 1507.2696665858803, "policy_ms": 2.177560736143591}
+{"event": "summary", "arm": "qr_mean", "n": 12, "mean": 1039.4726029935916, "cvar20": 769.4937107075287, "median": 1072.5833967361395, "full": 0, "max": 1541.3399243087003, "policy_ms": 2.646043526809596}
+{"event": "summary", "arm": "ppo_greedy", "n": 12, "mean": 1017.4822612655644, "cvar20": 742.24009441724, "median": 992.0231283284782, "full": 0, "max": 1600.217899688877, "policy_ms": 2.2802129526157713}
+{"event": "summary", "arm": "fin4_challenger", "n": 12, "mean": 1131.057426170521, "cvar20": 752.1086891181151, "median": 1128.18203957731, "full": 0, "max": 1888.7376474328366, "policy_ms": 3.4152343033241097}
+{"event": "paired", "arm": "qr_mean", "n": 12, "delta": -99.24856528770327, "lo": -192.99286502232917, "hi": -5.504265553077374}
+{"event": "paired", "arm": "ppo_greedy", "n": 12, "delta": -121.2389070157305, "lo": -256.8469763094112, "hi": 14.369162277950196}
+{"event": "paired", "arm": "fin4_challenger", "n": 12, "delta": -7.663742110773872, "lo": -211.88447994732252, "hi": 196.55699572577475}

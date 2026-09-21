@@ -1,0 +1,8 @@
+# on top of the official requirements.txt
+matplotlib
+cma            # CMA-ES for survivor.optimize / optimize_flee (a built-in CEM is used if missing)
+orjson         # optional: faster JSON in the server
+uvloop         # optional (Linux/macOS): faster event loop
+httptools      # optional
+imageio        # optional: mp4 output of `runner watch --headless --record`
+imageio-ffmpeg # optional
