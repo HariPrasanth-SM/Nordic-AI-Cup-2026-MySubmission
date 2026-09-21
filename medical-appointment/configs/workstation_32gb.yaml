@@ -1,0 +1,11 @@
+# Profile: office workstation -- NVIDIA RTX 5090, 32GB VRAM.
+#
+# Used for calibration/preprocessing (faster iteration) and as the final
+# server profile if this is the box that ends up with the public IP.
+
+asr:
+  compute_type: float16
+  device: cuda
+
+retrieval:
+  device: cuda

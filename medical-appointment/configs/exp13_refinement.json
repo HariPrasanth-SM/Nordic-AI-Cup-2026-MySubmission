@@ -1,0 +1,12 @@
+{
+  "bank_path": "models/contrast_bank_exp13.json",
+  "proposal_max_tokens": 2600,
+  "selection_max_tokens": 600,
+  "call_timeout_s": 24,
+  "min_remaining_s": 22,
+  "selection_min_remaining_s": 7,
+  "examples_per_question": 2,
+  "source_forward_segments": 4,
+  "max_prompt_chars": 43000,
+  "max_review_chars": 48000
+}

@@ -1,0 +1,8 @@
+{
+  "delta_score": 0.011936620528698927,
+  "paired_conversation_bootstrap_95_percent": [
+    0.009970561306465675,
+    0.01387330860370517
+  ],
+  "note": "Development uncertainty only; does not correct repeated tuning or shared demonstration-bank dependence."
+}

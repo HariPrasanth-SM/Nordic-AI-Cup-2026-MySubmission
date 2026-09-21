@@ -1,0 +1,6 @@
+{
+  "base_experiment": "exp13",
+  "start_fraction": 0.1,
+  "end_fraction": 0.0,
+  "end_offset_s": 0.1
+}

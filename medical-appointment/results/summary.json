@@ -1,0 +1,76 @@
+{
+  "questions": 390,
+  "positive_denominator": 195,
+  "accuracy": 0.9897435897435898,
+  "baseline_score": 0.7764547372635205,
+  "original_exp17_score": 0.759783972138003,
+  "overlapping_pool_score": 0.7857000124660628,
+  "overlapping_pool_tiou": 0.6496709609477115,
+  "overlapping_pool_delta_score": 0.009245275202542237,
+  "overlapping_pool_bootstrap_95_percent": [
+    -0.004148120040306658,
+    0.022984456729235124
+  ],
+  "improved": 22,
+  "regressed": 10,
+  "overlap_constrained_oracle": 0.7523247130935683,
+  "threshold_family_leave_reader_fold_out_score": 0.7707875247827333,
+  "fold_choices": [
+    {
+      "fold": 0,
+      "policy": [
+        "gate",
+        0,
+        2,
+        1.0
+      ]
+    },
+    {
+      "fold": 1,
+      "policy": [
+        "gate",
+        0,
+        6,
+        1.0
+      ]
+    },
+    {
+      "fold": 2,
+      "policy": [
+        "gate",
+        0,
+        2,
+        1.0
+      ]
+    },
+    {
+      "fold": 3,
+      "policy": [
+        "gate",
+        0.5,
+        2,
+        1.0
+      ]
+    },
+    {
+      "fold": 4,
+      "policy": [
+        "gate",
+        0.5,
+        2,
+        1.0
+      ]
+    }
+  ],
+  "pool_fold_tiou_deltas": {
+    "0": -0.03355988005831376,
+    "1": 0.03493180623086832,
+    "2": 0.01660214066057143,
+    "3": 0.03962187553890924,
+    "4": 0.01586336170800479
+  },
+  "deployment_recommended": false,
+  "note": "Post-hoc exploratory rules, not fresh validation. Shared reader-training and demo-bank dependencies remain; bootstrap does not correct rule selection.",
+  "trace_sha256": "004f916d79c9ca961eb48eca199e1313ac62d329b80e04a55ffa15bf0d9f437d",
+  "csv_sha256": "652fd4614c36d56a3055142aed9d8f5e6c1459518e65c01fd4a563e615242e76"
+}

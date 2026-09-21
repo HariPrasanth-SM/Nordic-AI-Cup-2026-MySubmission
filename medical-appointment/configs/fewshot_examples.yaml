@@ -1,0 +1,24 @@
+examples:
+- transcript_excerpt: Is it alright? Your chest and heart both sound normal. Nothing
+    abnormal to report.
+  question: Is the heart examination without abnormal findings?
+  answer: 'yes'
+  confidence: 92
+  quote: abnormal to report.
+- transcript_excerpt: Sporanox. 100 mg daily for 2 weeks. You take it after a meal.
+  question: Was the prescribed dose 200 mg daily?
+  answer: 'no'
+  confidence: 90
+  quote: ''
+- transcript_excerpt: It is, for the asthma.
+  question: Should the asthma medication dose be increased?
+  answer: 'no'
+  confidence: 90
+  quote: ''
+- transcript_excerpt: I read one all the way through, which tells you something. It
+    tells me we are running on time for once. So, this is your annual follow-up. It
+    is, for the asthma.
+  question: Is there any discussion about cooking?
+  answer: 'no'
+  confidence: 95
+  quote: ''

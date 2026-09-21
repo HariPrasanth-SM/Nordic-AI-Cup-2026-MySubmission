@@ -1,0 +1,24 @@
+# Profile: local dev / potential submission box -- NVIDIA RTX 4060, 8GB VRAM.
+#
+# Overrides base.yaml. Only hardware-driven choices belong here (device,
+# compute precision); model/algorithm choices that don't depend on VRAM stay
+# in base.yaml so the two profiles can't quietly drift apart on anything else.
+#
+# CONFIRMED WORKING ON A 4060 (Ada Lovelace) ONLY. int8_float16 is
+# confirmed BROKEN on Blackwell (RTX 50-series, e.g. the 5090) --
+# CTranslate2 explicitly disables INT8 on that architecture. This is not
+# theoretical: it produced consistent, reproducible CUBLAS_STATUS_NOT_SUPPORTED
+# crashes on this project's actual 5090 (root-caused after a long debugging
+# thread -- see git log). If this profile is ever pointed at a Blackwell
+# card, expect the same crash. It is not the default profile for exactly
+# this reason -- see solution/config.py's DEFAULT_PROFILE comment.
+#
+# verifier.kind: llm is NOT viable on this profile -- a 14B-class GGUF
+# model does not fit in 8GB alongside Whisper and the embedding model. The
+# LLM verifier is workstation_32gb-only.
+asr:
+  compute_type: int8_float16
+  device: cuda
+
+retrieval:
+  device: cuda

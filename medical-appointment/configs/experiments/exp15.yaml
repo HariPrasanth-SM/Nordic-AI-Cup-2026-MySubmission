@@ -1,0 +1,6 @@
+# Exp12 replaces the old LLM; llama-server owns Qwen3.5-27B weights.
+verifier:
+  kind: llm
+threshold:
+  mode: fixed
+  fixed_value: 0.5

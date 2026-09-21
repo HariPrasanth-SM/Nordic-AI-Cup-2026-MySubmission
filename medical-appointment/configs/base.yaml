@@ -1,0 +1,97 @@
+# Base configuration for the medical-appointment solution.
+#
+# A profile file (dev_8gb.yaml, workstation_32gb.yaml) is loaded on top of this
+# one and may override any key here. Calibrated values written by
+# scripts/calibrate.py are loaded on top of both (see solution/config.py for
+# the exact merge order). Nothing in this file should need to change between
+# experiments 1-2 -- span/threshold numbers belong in configs/calibrated/,
+# not here, so that re-running calibration never means editing this file.
+
+seed: 1234
+
+paths:
+  data_dir: data                       # official training data, read-only
+  transcripts_dir: transcripts         # ASR cache, gitignored (see .gitignore)
+  models_dir: models                   # local model weights cache, gitignored
+  calibrated_dir: configs/calibrated   # where calibrate.py writes tuned params
+
+asr:
+  # 'large-v3' and 'large-v3-turbo' are the two options experiment 1 benchmarks
+  # against each other. Whichever wins on measured local score + latency
+  # headroom becomes the default in each profile.
+  model_size: large-v3
+  language: en
+  vad_filter: true
+  beam_size: 5
+  # temperature is fixed at 0.0 (pure greedy decoding) rather than the usual
+  # [0.0, 0.2, 0.4] fallback ladder some Whisper recipes use for hallucination
+  # guarding on quiet stretches. That ladder samples once temperature > 0,
+  # which trades away exact reproducibility -- not worth it here given
+  # vad_filter + condition_on_previous_text=False already guard against the
+  # main failure mode (hallucinating on silence).
+  temperature: 0.0
+  condition_on_previous_text: false
+  # Short domain-vocabulary nudge. Keep this evidence-neutral: it should never
+  # mention specific drugs/doses that could bias the model toward a specific
+  # training-set answer, only the register and unit vocabulary of a GP visit.
+  initial_prompt: >-
+    A recorded conversation between a doctor and a patient in a general
+    practice clinic: symptoms, examination findings, lab results, diagnoses,
+    medications with doses in mg or mcg, dosing frequency, treatment
+    duration, and follow-up plans.
+
+retrieval:
+  # A small, retrieval-tuned sentence embedding model. Swappable per-profile
+  # or per-experiment without touching code -- see solution/retrieval.py.
+  embedding_model: BAAI/bge-small-en-v1.5
+  query_prefix: "Represent this question for retrieving supporting passages: "
+  passage_prefix: ""
+  # How ASR segments are merged into coarse candidate windows before the
+  # first (cheap) retrieval pass.
+  coarse_merge_sizes: [1, 2, 3]   # 1, 2 and 3 adjacent segments, each kept as its own window
+  coarse_top_k: 6                 # how many coarse windows move on to fine search, per question
+
+span:
+  # Fine-grained word-window search inside the top coarse window(s), which is
+  # what actually produces a tight (~3s) span without needing an LLM to name
+  # a quote. See solution/span.py.
+  fine_search_top_k_coarse: 3     # search inside this many top coarse windows
+  min_duration_s: 1.2             # brackets the 5th-95th pct of annotated spans
+  max_duration_s: 6.0
+  target_duration_s: 3.0          # tie-break preference: median annotated span is 2.88s
+  duration_variants_s: [2.0, 2.5, 3.0, 3.5, 4.5]   # window sizes tried at each start position
+  stride_words: 2
+
+threshold:
+  # 'fixed' -- a single similarity threshold from configs/calibrated/.
+  # 'dynamic' -- the metric-aware formula p > 1 / (2 + 3*t_hat), used once we
+  #   have a real calibrated P(yes) (experiment 3's LLM verifier). Kept here,
+  #   unused by experiment 1-2's SimilarityVerifier, so the switch is a config
+  #   edit later, not a code change.
+  mode: fixed
+  fixed_value: 0.5    # placeholder; scripts/calibrate.py overwrites this via configs/calibrated/
+
+timing:
+  soft_deadline_s: 45.0   # abandon optional work and return the best answer so far
+  hard_timeout_s: 58.0    # absolute ceiling, safely under the evaluator's 60s
+
+verifier:
+  kind: similarity   # 'similarity' (proven, 0.513 on the validation server) | 'llm' (experiment 3)
+  # Switch verifier.kind to 'llm' here, OR override per-run without editing
+  # this file: `python scripts/calibrate.py --profile workstation_32gb --verifier llm`
+  # -- calibrate.py writes verifier.kind into its output calibrated config,
+  # so a successful LLM calibration run makes the server pick it up
+  # automatically next time it starts (same mechanism as asr.model_size).
+
+llm:
+  # Only loaded/used when verifier.kind: llm. A 14B-class model at Q4_K_M
+  # comfortably fits in 32GB alongside Whisper + the embedding model, with
+  # real headroom -- not viable on the dev_8gb profile's 8GB card.
+  repo_id: bartowski/Qwen2.5-14B-Instruct-GGUF
+  filename: Qwen2.5-14B-Instruct-Q4_K_M.gguf
+  n_ctx: 8192
+  n_gpu_layers: -1
+  temperature: 0.0
+  max_tokens: 2048
+  fewshot_path: configs/fewshot_examples.yaml
+  verbose: false   # flip to true only when actively debugging GPU offload/load issues

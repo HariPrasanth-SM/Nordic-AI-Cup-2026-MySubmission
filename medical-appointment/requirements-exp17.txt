@@ -1,0 +1,5 @@
+# Reuse the working CUDA PyTorch and Transformers installation.
+# This file adds tokenizer/checkpoint dependencies only.
+sentencepiece>=0.2.0
+safetensors>=0.4.3
+protobuf>=3.20

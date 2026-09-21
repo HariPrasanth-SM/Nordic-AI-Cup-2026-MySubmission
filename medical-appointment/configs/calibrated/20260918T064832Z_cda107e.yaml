@@ -1,0 +1,7 @@
+asr:
+  model_size: large-v3-turbo
+span:
+  target_duration_s: 2.5
+threshold:
+  mode: fixed
+  fixed_value: 0.69

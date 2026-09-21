@@ -1,0 +1,6 @@
+# Loaded AFTER calibration so experiment identity cannot silently be overridden.
+verifier:
+  kind: llm
+llm:
+  n_ctx: 16384
+  max_tokens: 2304

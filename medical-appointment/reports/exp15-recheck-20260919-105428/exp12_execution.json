@@ -1,0 +1,39 @@
+{
+  "execution_gate_passed": true,
+  "expected_conversations": 39,
+  "stage_counts": {
+    "exp12_attempt": 39,
+    "exp12_config": 39,
+    "exp12_examples": 39,
+    "exp12_call": 118,
+    "exp12_raw": 39,
+    "candidates": 386,
+    "exp12_coverage": 39,
+    "exp13_baseline": 39,
+    "exp13_config": 39,
+    "exp13_examples": 39,
+    "exp13_call": 78,
+    "exp13_proposals_raw": 39,
+    "exp13_candidates": 193,
+    "exp13_selection_raw": 39,
+    "exp13_selected": 193,
+    "exp13_coverage": 39,
+    "exp15_baseline": 39,
+    "exp15_calibration": 39,
+    "pre_alignment": 39,
+    "exp12_rejection": 2,
+    "exp12_repair_raw": 1,
+    "exp12_missing_span": 1,
+    "exp13_rejection": 1
+  },
+  "rejection_reasons": {
+    "quote_not_found": 2
+  },
+  "predicted_positive": 193,
+  "resolved_positive": 192,
+  "grounding_coverage": 0.9948186528497409,
+  "candidate_oracle_all_gold_positives": 0.6493795479544854,
+  "candidate_coverage_all_gold_positives": 192,
+  "positive_denominator": 195,
+  "note": "Execution gate is not a quality gate. All gold positives count; no candidates means oracle zero."
+}

@@ -1,0 +1,7 @@
+asr:
+  model_size: large-v3
+verifier:
+  kind: llm
+threshold:
+  mode: fixed
+  fixed_value: 0.06

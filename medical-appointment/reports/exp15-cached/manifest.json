@@ -1,0 +1,10 @@
+{
+  "mode": "saved_prediction_calibration_only",
+  "config": {
+    "base_experiment": "exp13",
+    "start_fraction": 0.1,
+    "end_fraction": 0.0,
+    "end_offset_s": 0.1
+  },
+  "input_sha256": "38a25c1283da6bd791ff5ddc5cda97354df79bdab72bf332eaad773f04ee293b"
+}
