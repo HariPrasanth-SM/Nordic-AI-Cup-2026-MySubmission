@@ -1,4 +1,7 @@
-# Nordic AI Cup 2026
+# Nordic AI Cup 2026: submission by The Winter Soldier
+
+> [!NOTE]
+> This repository contains the final submission solution by The Winter Soldier.
 
 Welcome to the **Nordic AI Cup**, hosted by [Ambolt AI](https://ambolt.io/). Previously held as the Danish national competition, the event now spans the whole of the Nordics, with a partner organization in each participating country.  
 
